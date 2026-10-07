@@ -1,0 +1,15 @@
+{
+    "name": "Aegis Security Services",
+    "short_name": "Aegis",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#081427",
+    "theme_color": "#081427",
+    "icons": [
+        {
+            "src": "assets/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}
