@@ -332,20 +332,99 @@ h4,
     mask-image: radial-gradient(circle at 60% 32%, #000 38%, transparent 78%)
 }
 
-/* .hero__photo {
+/* ===== HERO BACKGROUND PNG (animated) ===== */
+.hero__photo {
     position: absolute;
-    top: 0;
+    top: 0px;
     right: 0;
     bottom: 0;
     z-index: 1;
     pointer-events: none;
-    width: clamp(320px, 46vw, 820px);
-    background-image: url('../assets/security-hero.png');
-    background-size: cover;
-    background-position: right center;
-    background-repeat: no-repeat;
-    opacity: 1;
-} */
+    width: 58vw;
+    min-width: 340px;
+    overflow: hidden;
+    /* soft fade into the dark background on the left, top and bottom */
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 38%, #000 100%),
+        linear-gradient(180deg, #000 0%, #000 80%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(90deg, transparent 0%, #000 38%, #000 100%),
+        linear-gradient(180deg, #000 0%, #000 80%, transparent 100%);
+    mask-composite: intersect;
+}
+
+/* the animated image layer */
+.hero__photo::before {
+    content: "";
+    position: absolute;
+    inset: clamp(40px, 6vw, 100px)0 0 0;
+    background: url('../assets/security-hero.png') right 20% / cover no-repeat;
+    opacity: .85;
+    transform-origin: 80% 0%;
+    animation: heroDrift 18s ease-in-out infinite alternate;
+    will-change: transform;
+}
+
+/* glowing city-light shimmer over the image */
+.hero__photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(260px 200px at 72% 28%, rgba(245, 179, 1, .28), transparent 70%),
+        radial-gradient(220px 180px at 85% 70%, rgba(245, 179, 1, .20), transparent 70%),
+        radial-gradient(200px 160px at 55% 55%, rgba(56, 189, 248, .14), transparent 70%);
+    mix-blend-mode: screen;
+    animation: heroGlow 6s ease-in-out infinite alternate;
+}
+
+@keyframes heroDrift {
+    0% {
+        transform: scale(1) translate3d(0, 0, 0);
+    }
+
+    100% {
+        transform: scale(1.05) translate3d(-12px, 0, 0);
+    }
+}
+
+@keyframes heroGlow {
+    0% {
+        opacity: .35;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(-14px);
+    }
+}
+
+/* make sure the dark gradient on the left stays readable over the image */
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(8, 20, 39, .88) 0%, rgba(8, 20, 39, .55) 40%, transparent 70%);
+}
+
+/* respect users who disable animation */
+@media (prefers-reduced-motion: reduce) {
+
+    .hero__photo::before,
+    .hero__photo::after {
+        animation: none;
+    }
+}
+
+/* mobile: show it as a faint backdrop */
+@media (max-width: 900px) {
+    .hero__photo {
+        width: 100%;
+        opacity: .35;
+    }
+}
 
 .hero__glow {
     position: absolute;
@@ -1353,17 +1432,7 @@ h4,
 
 @media(max-width:1100px) {
 
-    /* .hero__photo {
-        width: clamp(280px, 50vw, 620px);
-        opacity: .8;
-    } */
 
-    /* .hero__photo::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(90deg, #0b1d38 0%, rgba(11, 29, 56, .6) 28%, transparent 60%);
-    } */
 
     .hero__inner {
         grid-template-columns: 1fr;
@@ -1415,11 +1484,7 @@ h4,
 }
 
 @media(max-width:760px) {
-    /* .hero__photo {
-        width: 72%;
-        opacity: .5;
-        background-position: 85% center;
-    } */
+
 
     .nav__toggle {
         display: flex
@@ -1473,9 +1538,6 @@ h4,
 
 @media(max-width:560px) {
 
-    /* .hero__photo {
-        display: none;
-    } */
 
     .stats,
     .steps,
@@ -1497,43 +1559,3 @@ h4,
         transform: none
     }
 }
-
-/* .hero__photo {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-    pointer-events: none;
-    width: clamp(380px, 52vw, 900px);
-    background: url('../assets/security-hero.png') right center/cover no-repeat;
-    opacity: 1;
-}
-
-.hero__photo::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, #081427 0%, rgba(8, 20, 39, .85) 22%, rgba(8, 20, 39, .4) 52%, transparent 80%);
-}
-
-@media(max-width: 1100px) {
-    .hero__photo {
-        width: clamp(320px, 56vw, 640px);
-        opacity: .85;
-    }
-}
-
-@media(max-width: 960px) {
-    .hero__photo {
-        width: 72%;
-        opacity: .4;
-        background-position: center;
-    }
-}
-
-@media(max-width: 560px) {
-    .hero__photo {
-        display: none;
-    }
-} */
